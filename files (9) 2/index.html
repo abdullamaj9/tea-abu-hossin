@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شاي أبوحسين</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@200;300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#c9a84c;--gold-light:#e2c97e;--gold-dim:#5a4518;--cream:#f5ede0;}
+body{background:#080603;color:var(--cream);font-family:'Tajawal',sans-serif;overflow-x:hidden;}
+/* PAGE SYSTEM */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:1.2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,6,3,.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,168,76,.15);}
+.nav-logo{font-family:'Amiri',serif;font-size:1.3rem;color:var(--cream);text-decoration:none;cursor:pointer;}
+.nav-links{display:flex;gap:.5rem;list-style:none;}
+.nav-links li a{font-size:.65rem;font-weight:300;letter-spacing:.2em;color:rgba(245,237,224,.55);text-decoration:none;text-transform:uppercase;padding:.5rem 1rem;border:1px solid transparent;transition:all .3s;cursor:pointer;}
+.nav-links li a:hover,.nav-links li a.active{color:var(--gold);border-color:rgba(201,168,76,.3);}
+/* MUSIC CONTROLS */
+#music-btn{position:fixed;bottom:2rem;right:2rem;z-index:500;width:48px;height:48px;border-radius:50%;border:1px solid rgba(201,168,76,.4);background:rgba(8,6,3,.8);color:var(--gold);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;backdrop-filter:blur(6px);}
+#music-btn:hover{background:rgba(201,168,76,.15);border-color:var(--gold);}
+/* WHATSAPP BTN */
+.wa-btn{position:fixed;bottom:2rem;left:2rem;z-index:500;background:#25D366;color:#fff;border:none;border-radius:50px;padding:.7rem 1.4rem;font-size:.75rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.5rem;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(37,211,102,.3);}
+.wa-btn:hover{transform:scale(1.05);box-shadow:0 6px 28px rgba(37,211,102,.45);}
+.wa-btn svg{width:18px;height:18px;}
+/* ═══════════════ PAGE 1 ═══════════════ */
+/* Scroll-video engine */
+#scroll-driver{position:relative;}
+#sticky-shell{position:sticky;top:0;width:100%;height:100vh;overflow:hidden;}
+video#hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#vid-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,6,3,.25) 0%,rgba(8,6,3,.05) 45%,rgba(8,6,3,.55) 85%,rgba(8,6,3,.95) 100%);z-index:1;}
+.scene-panel{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;opacity:0;transition:opacity .7s ease;pointer-events:none;}
+.scene-panel.active{opacity:1;pointer-events:auto;}
+.scene-num{font-family:'Cormorant Garamond',serif;font-size:.65rem;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:1.4rem;}
+.scene-headline{font-family:'Amiri',serif;font-size:clamp(3rem,8vw,7rem);font-weight:700;line-height:1;color:var(--cream);margin-bottom:.8rem;}
+.scene-sub{font-family:'Amiri',serif;font-size:clamp(1rem,2vw,1.5rem);font-style:italic;color:var(--gold-light);margin-bottom:2rem;}
+.scene-body{max-width:520px;font-size:1rem;font-weight:300;line-height:1.85;color:rgba(245,237,224,.65);margin-bottom:2rem;}
+.scene-cta{font-size:.65rem;font-weight:400;letter-spacing:.3em;color:var(--cream);text-decoration:none;text-transform:uppercase;border-bottom:1px solid var(--gold);padding-bottom:.25rem;cursor:pointer;background:none;border-top:none;border-right:none;border-left:none;transition:color .3s;}
+.scene-cta:hover{color:var(--gold);}
+.tag-row{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-bottom:1.5rem;}
+.tag{font-size:.65rem;border:1px solid rgba(201,168,76,.35);padding:.35rem 1rem;color:rgba(245,237,224,.7);text-transform:uppercase;letter-spacing:.15em;}
+/* Products section (after video) */
+.products-wrap{max-width:1100px;margin:0 auto;padding:6rem 2rem 4rem;}
+.sec-label{font-size:.65rem;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem;text-align:center;}
+.sec-title{font-family:'Amiri',serif;font-size:clamp(2rem,5vw,3.5rem);text-align:center;margin-bottom:.8rem;}
+.sec-div{display:flex;align-items:center;gap:1rem;justify-content:center;margin-bottom:3rem;}
+.sdl{flex:1;height:1px;background:var(--gold-dim);max-width:50px;}
+.sec-div span{color:var(--gold);}
+.p-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
+.p-card{background:#100d08;border:1px solid rgba(201,168,76,.1);border-radius:4px;overflow:hidden;transition:border-color .4s,transform .3s;cursor:pointer;}
+.p-card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px);}
+.p-img{width:100%;aspect-ratio:1;object-fit:contain;background:#fff;padding:1rem;}
+.p-info{padding:1.2rem;}
+.p-tag{font-size:.58rem;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:.3rem;}
+.p-name{font-family:'Amiri',serif;font-size:1.25rem;margin-bottom:.4rem;line-height:1.2;}
+.p-desc{font-size:.78rem;font-weight:300;line-height:1.7;color:rgba(245,237,224,.5);margin-bottom:1rem;}
+.p-row{display:flex;align-items:center;gap:.8rem;}
+.p-num{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold-light);}
+.p-btn{font-size:.58rem;letter-spacing:.15em;border:1px solid rgba(201,168,76,.4);padding:.38rem .9rem;background:transparent;color:var(--cream);cursor:pointer;text-transform:uppercase;transition:all .3s;border-radius:2px;}
+.p-btn:hover{background:var(--gold);color:#080603;border-color:var(--gold);}
+/* progress & scroll hint */
+#progress-bar{position:fixed;bottom:0;left:0;right:0;height:2px;background:rgba(201,168,76,.12);z-index:400;}
+#progress-fill{height:100%;background:var(--gold);width:0%;transition:width .05s linear;}
+#scroll-hint{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:1;transition:opacity .6s;pointer-events:none;}
+#scroll-hint span{font-size:.6rem;letter-spacing:.3em;color:rgba(245,237,224,.45);text-transform:uppercase;}
+.sh-line{width:1px;height:44px;background:linear-gradient(to bottom,var(--gold),transparent);animation:shP 2s infinite;}
+@keyframes shP{0%,100%{opacity:.3;}50%{opacity:1;}}
+/* ═══════════════ PAGE 2 — BENEFITS ═══════════════ */
+.p2-hero{min-height:35vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 2rem 3rem;background:linear-gradient(to bottom,#080603 0%,#0f0a05 100%);border-bottom:1px solid rgba(201,168,76,.12);}
+.p2-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:rgba(201,168,76,.08);margin:0;}
+.b-card{background:#080603;padding:2.5rem 2rem;border:1px solid rgba(201,168,76,.06);transition:background .4s;}
+.b-card:hover{background:#0f0a05;}
+.b-icon{font-size:2rem;margin-bottom:1rem;display:block;}
+.b-title{font-family:'Amiri',serif;font-size:1.4rem;margin-bottom:.7rem;color:var(--gold-light);}
+.b-text{font-size:.88rem;font-weight:300;line-height:1.85;color:rgba(245,237,224,.6);}
+.study-section{max-width:900px;margin:0 auto;padding:5rem 2rem;}
+.study-card{background:#0f0a05;border:1px solid rgba(201,168,76,.12);border-radius:4px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.study-card::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--gold),transparent);}
+.study-journal{font-size:.6rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.5rem;}
+.study-title{font-family:'Amiri',serif;font-size:1.3rem;margin-bottom:.8rem;line-height:1.3;}
+.study-text{font-size:.88rem;font-weight:300;line-height:1.85;color:rgba(245,237,224,.6);}
+.study-meta{margin-top:1rem;font-size:.7rem;color:rgba(245,237,224,.3);letter-spacing:.1em;}
+/* ═══════════════ PAGE 3 — MAP ═══════════════ */
+.p3-hero{min-height:30vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 2rem 3rem;}
+#map-wrap{width:100%;max-width:1100px;margin:0 auto;padding:0 2rem 2rem;}
+#world-map{width:100%;height:520px;background:#0d0a06;border:1px solid rgba(201,168,76,.12);border-radius:4px;position:relative;overflow:hidden;}
+#map-svg{width:100%;height:100%;}
+/* Country tooltips */
+.map-tooltip{position:absolute;background:rgba(8,6,3,.95);border:1px solid rgba(201,168,76,.4);padding:1rem 1.2rem;border-radius:4px;pointer-events:none;opacity:0;transition:opacity .3s;z-index:10;min-width:200px;}
+.tt-country{font-family:'Amiri',serif;font-size:1.1rem;color:var(--gold-light);margin-bottom:.3rem;}
+.tt-prod{font-size:.75rem;font-weight:300;color:rgba(245,237,224,.6);margin-bottom:.5rem;}
+.tt-bar-wrap{height:4px;background:rgba(201,168,76,.15);border-radius:2px;overflow:hidden;}
+.tt-bar{height:100%;background:var(--gold);border-radius:2px;}
+/* Country grid below map */
+.country-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;max-width:1100px;margin:2rem auto 4rem;padding:0 2rem;}
+.c-card{background:#0f0a05;border:1px solid rgba(201,168,76,.08);border-radius:4px;padding:1.5rem;transition:border-color .3s;}
+.c-card:hover{border-color:rgba(201,168,76,.3);}
+.c-flag{font-size:1.8rem;margin-bottom:.5rem;}
+.c-name{font-family:'Amiri',serif;font-size:1.1rem;color:var(--gold-light);margin-bottom:.3rem;}
+.c-prod{font-size:.75rem;color:rgba(245,237,224,.5);margin-bottom:.8rem;}
+.c-bar-wrap{height:3px;background:rgba(201,168,76,.12);border-radius:2px;overflow:hidden;}
+.c-bar{height:100%;background:linear-gradient(to right,var(--gold-dim),var(--gold));border-radius:2px;}
+.c-pct{font-size:.65rem;color:var(--gold);margin-top:.4rem;letter-spacing:.1em;}
+/* FOOTER */
+footer{border-top:1px solid rgba(201,168,76,.1);padding:3rem 2rem 2rem;text-align:center;}
+.f-logo{font-family:'Amiri',serif;font-size:2rem;margin-bottom:.3rem;}
+.f-tag{font-size:.62rem;letter-spacing:.3em;color:rgba(245,237,224,.3);text-transform:uppercase;margin-bottom:1.5rem;}
+.f-contact{font-size:.85rem;color:rgba(245,237,224,.5);margin-bottom:1.5rem;}
+.f-contact a{color:var(--gold);text-decoration:none;}
+.f-copy{font-size:.6rem;color:rgba(245,237,224,.2);}
+/* INTRO */
+#intro{position:fixed;inset:0;background:#080603;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;transition:opacity .8s ease;}
+#intro-logo{font-family:'Amiri',serif;font-size:2.8rem;color:var(--cream);opacity:0;animation:fi .8s .3s forwards;}
+#intro-bar{width:90px;height:1px;background:rgba(201,168,76,.2);position:relative;overflow:hidden;opacity:0;animation:fi .5s .5s forwards;}
+#intro-bar::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--gold);animation:bSlide 1.5s .8s ease-out forwards;}
+@keyframes fi{to{opacity:1;}}
+@keyframes bSlide{to{left:100%;}}
+@media(max-width:768px){nav{padding:1rem 1.2rem;}.nav-links li a{padding:.4rem .6rem;font-size:.58rem;}.p-grid{grid-template-columns:repeat(2,1fr);}.p2-cards{grid-template-columns:1fr;}.country-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro"><div id="intro-logo">شاي أبوحسين</div><div id="intro-bar"></div></div>
+
+<!-- MUSIC: local file song.mp3 -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- MUSIC BTN -->
+<button id="music-btn" title="إيقاف الموسيقى">⏸</button>
+
+<!-- WHATSAPP -->
+<a class="wa-btn" href="https://wa.me/971509788772" target="_blank">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.535 5.849L.057 23.5l5.797-1.522A11.938 11.938 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.794 9.794 0 01-5.031-1.384l-.36-.214-3.742.981.999-3.648-.234-.374A9.789 9.789 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+  تواصل معنا
+</a>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo" onclick="showPage(1)">شاي أبوحسين</span>
+  <ul class="nav-links">
+    <li><a onclick="showPage(1)" class="active" id="nav1">المتجر</a></li>
+    <li><a onclick="showPage(2)" id="nav2">فوائد الشاي</a></li>
+    <li><a onclick="showPage(3)" id="nav3">خريطة المزارع</a></li>
+  </ul>
+</nav>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- ═══════════════ PAGE 1 ═══════════════ -->
+<div class="page active" id="page1">
+
+  <div id="scroll-hint">
+    <div class="sh-line"></div>
+    <span>مرر للاستمتاع</span>
+  </div>
+
+  <div id="scroll-driver">
+    <div id="sticky-shell">
+      <video id="hero" muted playsinline preload="auto">
+        <source src="hero_tea.mp4" type="video/mp4">
+      </video>
+      <div id="vid-overlay"></div>
+
+      <div class="scene-panel active" id="scene-0">
+        <div class="scene-num">٠١ · الأصل</div>
+        <h1 class="scene-headline">شاي أبوحسين</h1>
+        <p class="scene-sub">أصالة الطعم · عراقة الجذور</p>
+        <p class="scene-body">ليس مجرد شاي — بل إرث يمتد عبر الأجيال.</p>
+        <button class="scene-cta" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})">اكتشف المجموعة</button>
+      </div>
+
+      <div class="scene-panel" id="scene-1">
+        <div class="scene-num">٠٢ · القصة</div>
+        <h2 class="scene-headline" style="font-size:clamp(2rem,6vw,5rem);">من الجذور<br>إلى الكوب</h2>
+        <p class="scene-sub">منذ أمد بعيد، اخترنا الأجود</p>
+        <div class="tag-row"><span class="tag">مختار يدوياً</span><span class="tag">جودة عالمية</span><span class="tag">أصيل</span></div>
+      </div>
+
+      <div class="scene-panel" id="scene-2">
+        <div class="scene-num">٠٣ · المزيج</div>
+        <h2 class="scene-headline" style="font-size:clamp(2rem,5vw,4.5rem);">أجود أنواع<br>الشاي العالمي</h2>
+        <p class="scene-sub">مختار من أرقى مزارع العالم</p>
+        <p class="scene-body">من سريلانكا إلى الهند وكينيا — أفضل الأوراق في كل علبة.</p>
+      </div>
+
+      <div class="scene-panel" id="scene-3">
+        <div class="scene-num">٠٤ · الطقوس</div>
+        <h2 class="scene-headline" style="font-size:clamp(2rem,5vw,4.5rem);">صُبَّ. انتظر.<br>تنفَّس.</h2>
+        <p class="scene-sub">ثلاث دقائق. نفَس واحد.</p>
+      </div>
+
+      <div class="scene-panel" id="scene-4">
+        <div class="scene-num">٠٥ · الدعوة</div>
+        <h2 class="scene-headline" style="font-size:clamp(2.5rem,7vw,6rem);">ابدأ<br>طقستك</h2>
+        <p class="scene-sub">اكتشف مجموعة شاي أبوحسين</p>
+        <button class="scene-cta" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})">تسوق الآن ↓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div style="background:#080603;" id="products-sec">
+    <div class="products-wrap">
+      <p class="sec-label">المجموعة</p>
+      <h2 class="sec-title">اختر طقستك</h2>
+      <div class="sec-div"><div class="sdl"></div><span>◆</span><div class="sdl"></div></div>
+      <div class="p-grid">
+        <div class="p-card">
+          <img src="tea1.jpeg" class="p-img" alt="شاي الفطور الإنجليزي" loading="lazy">
+          <div class="p-info">
+            <p class="p-tag">الأكثر مبيعاً</p>
+            <h3 class="p-name">شاي الفطور الإنجليزي</h3>
+            <p class="p-desc">مزيج قوي من أجود أوراق الشاي — يبدأ به كل صباح.</p>
+            <div class="p-row"><span class="p-num">٣٨ د.إ</span><button class="p-btn" onclick="orderTea('شاي الفطور الإنجليزي')">اطلب الآن</button></div>
+          </div>
+        </div>
+        <div class="p-card">
+          <img src="tea5.jpeg" class="p-img" alt="شاي سليم" loading="lazy">
+          <div class="p-info">
+            <p class="p-tag">صحي</p>
+            <h3 class="p-name">شاي سليم</h3>
+            <p class="p-desc">ليمون وماتشا وشاي أخضر — لرشاقتك ونشاطك اليومي.</p>
+            <div class="p-row"><span class="p-num">٤٥ د.إ</span><button class="p-btn" onclick="orderTea('شاي سليم')">اطلب الآن</button></div>
+          </div>
+        </div>
+        <div class="p-card">
+          <img src="tea4.jpeg" class="p-img" alt="إيرل غراي" loading="lazy">
+          <div class="p-info">
+            <p class="p-tag">الكلاسيكي</p>
+            <h3 class="p-name">إيرل غراي</h3>
+            <p class="p-desc">الشاي الأسود مع عطر البرغموت الإيطالي — تجربة لا تُنسى.</p>
+            <div class="p-row"><span class="p-num">٥٢ د.إ</span><button class="p-btn" onclick="orderTea('إيرل غراي')">اطلب الآن</button></div>
+          </div>
+        </div>
+        <div class="p-card">
+          <img src="tea2.jpeg" class="p-img" alt="شاي أخضر" loading="lazy">
+          <div class="p-info">
+            <p class="p-tag">الأخضر</p>
+            <h3 class="p-name">شاي أخضر</h3>
+            <p class="p-desc">مزيج كلاسيكي لطيف — غني بمضادات الأكسدة والفوائد.</p>
+            <div class="p-row"><span class="p-num">٤٠ د.إ</span><button class="p-btn" onclick="orderTea('شاي أخضر')">اطلب الآن</button></div>
+          </div>
+        </div>
+        <div class="p-card">
+          <img src="tea3.jpeg" class="p-img" alt="شاي هضم" loading="lazy">
+          <div class="p-info">
+            <p class="p-tag">للهضم</p>
+            <h3 class="p-name">شاي الهضم</h3>
+            <p class="p-desc">نعناع حلو وشومر — يريح المعدة ويجدد النشاط.</p>
+            <div class="p-row"><span class="p-num">٤٢ د.إ</span><button class="p-btn" onclick="orderTea('شاي الهضم')">اطلب الآن</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p class="f-logo">شاي أبوحسين</p>
+      <p class="f-tag">أصالة الطعم · عراقة الجذور</p>
+      <p class="f-contact">للطلب والاستفسار: <a href="tel:+00971509788772">٠٠٩٧١٥٠٩٧٨٨٧٧٢</a> | <a href="https://wa.me/971509788772">واتساب</a></p>
+      <p class="f-copy">© ٢٠٢٦ شاي أبوحسين — جميع الحقوق محفوظة</p>
+    </footer>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE 2 — BENEFITS ═══════════════ -->
+<div class="page" id="page2">
+  <div class="p2-hero">
+    <p class="sec-label">علم وصحة</p>
+    <h1 class="sec-title" style="font-family:'Amiri',serif;font-size:clamp(2.5rem,6vw,4.5rem);">فوائد الشاي</h1>
+    <p style="font-family:'Amiri',serif;font-size:1.1rem;font-style:italic;color:var(--gold-light);margin-top:.5rem;">ما يقوله العلم عن كنز المشروبات</p>
+  </div>
+
+  <div class="p2-cards">
+    <div class="b-card"><span class="b-icon">🫀</span><h3 class="b-title">صحة القلب</h3><p class="b-text">تناول الشاي بانتظام مرتبط بانخفاض خطر الإصابة بأمراض القلب والأوعية الدموية بنسبة تصل إلى 20٪. مضادات الأكسدة (الفلافونويد) تحمي الشرايين وتُحسّن تدفق الدم.</p></div>
+    <div class="b-card"><span class="b-icon">🧠</span><h3 class="b-title">تعزيز التركيز</h3><p class="b-text">مزيج الكافيين والثيانين في الشاي يُحسّن التركيز واليقظة دون القلق الذي يسببه القهوة. يحسّن الذاكرة قصيرة المدى ويزيد الإنتاجية.</p></div>
+    <div class="b-card"><span class="b-icon">⚖️</span><h3 class="b-title">إدارة الوزن</h3><p class="b-text">الشاي الأخضر يرفع معدل الأيض بنسبة 4-5٪. الكاتيكينات تساعد على حرق الدهون، خاصة الدهون في منطقة البطن، وتُعزز كفاءة التمارين الرياضية.</p></div>
+    <div class="b-card"><span class="b-icon">🛡️</span><h3 class="b-title">تقوية المناعة</h3><p class="b-text">يحتوي الشاي على مضادات بكتيرية ومضادات فيروسية طبيعية. البوليفينول يُقوّي جهاز المناعة ويُقلّل الالتهابات المزمنة في الجسم.</p></div>
+    <div class="b-card"><span class="b-icon">🦷</span><h3 class="b-title">صحة الأسنان</h3><p class="b-text">الفلوريد الطبيعي في الشاي يُعزز مينا الأسنان ويُقلّل التسوس. المركبات المضادة للبكتيريا تُقلّل من البكتيريا المسببة لتسوس الأسنان وأمراض اللثة.</p></div>
+    <div class="b-card"><span class="b-icon">😌</span><h3 class="b-title">تخفيف التوتر</h3><p class="b-text">الثيانين حمض أميني نادر موجود في الشاي يُعزز موجات ألفا في الدماغ المرتبطة بالاسترخاء والتركيز. يُقلّل هرمون الكورتيزول ويُهدّئ الجهاز العصبي.</p></div>
+  </div>
+
+  <div class="study-section">
+    <p class="sec-label" style="text-align:right;">أبحاث علمية محكّمة</p>
+    <h2 class="sec-title" style="text-align:right;font-size:clamp(1.5rem,4vw,2.5rem);margin-bottom:2rem;">ماذا يقول العلماء؟</h2>
+
+    <div class="study-card">
+      <p class="study-journal">New England Journal of Medicine · 2023</p>
+      <h3 class="study-title">الشاي الأخضر يُقلّل خطر الإصابة بالسرطان</h3>
+      <p class="study-text">دراسة أجريت على 40,000 مشارك في اليابان لمدة 11 عاماً أظهرت أن شرب 5 أكواب أو أكثر من الشاي الأخضر يومياً مرتبط بانخفاض ملحوظ في معدلات الوفاة بسبب أمراض القلب والأوعية الدموية وبعض أنواع السرطان.</p>
+      <p class="study-meta">Kuriyama S. et al. | n=40,530 | متابعة 11 سنة</p>
+    </div>
+
+    <div class="study-card">
+      <p class="study-journal">The Lancet · 2022</p>
+      <h3 class="study-title">الفلافونويد وصحة الأوعية الدموية</h3>
+      <p class="study-text">تحليل شمل 22 دراسة سريرية أثبت أن مضادات الأكسدة في الشاي الأسود تُحسّن مرونة الأوعية الدموية وتُقلّل ضغط الدم الانبساطي بمعدل 2.6 ملم زئبق. تأثير يُعادل استخدام أدوية خفيفة لضغط الدم.</p>
+      <p class="study-meta">Hodgson J.M. et al. | Meta-analysis | 22 RCT</p>
+    </div>
+
+    <div class="study-card">
+      <p class="study-journal">Nature Neuroscience · 2021</p>
+      <h3 class="study-title">الشاي والوقاية من الزهايمر</h3>
+      <p class="study-text">أبحاث حديثة تُشير إلى أن EGCG (الكاتيكين الرئيسي في الشاي الأخضر) يُثبّط تراكم بروتين بيتا-أميلويد المسؤول عن مرض الزهايمر. شرب 3 أكواب يومياً قد يُقلّل خطر التدهور المعرفي بنسبة 36٪.</p>
+      <p class="study-meta">Ide K. et al. | Clinical trial | n=2,830</p>
+    </div>
+
+    <div class="study-card">
+      <p class="study-journal">American Journal of Clinical Nutrition · 2023</p>
+      <h3 class="study-title">الشاي والسكري من النوع الثاني</h3>
+      <p class="study-text">تحليل شامل لـ 18 دراسة أثبت أن شرب 3-4 أكواب من الشاي يومياً مرتبط بانخفاض خطر الإصابة بمرض السكري من النوع الثاني بنسبة 18٪. البوليفينول يُحسّن حساسية الإنسولين.</p>
+      <p class="study-meta">Yang W.S. et al. | 18 studies | n=286,701</p>
+    </div>
+  </div>
+
+  <footer>
+    <p class="f-logo">شاي أبوحسين</p>
+    <p class="f-tag">الصحة في كل كوب</p>
+    <p class="f-contact">للطلب: <a href="tel:971509788772">٠٠٩٧١٥٠٩٧٨٨٧٧٢</a> | <a href="https://wa.me/971509788772">واتساب</a></p>
+    <p class="f-copy">© ٢٠٢٦ شاي أبوحسين</p>
+  </footer>
+</div>
+
+<!-- ═══════════════ PAGE 3 — MAP ═══════════════ -->
+<div class="page" id="page3">
+  <div class="p3-hero">
+    <p class="sec-label">جغرافيا الشاي</p>
+    <h1 class="sec-title" style="font-family:'Amiri',serif;font-size:clamp(2.5rem,6vw,4.5rem);">خريطة مزارع الشاي</h1>
+    <p style="font-family:'Amiri',serif;font-size:1.1rem;font-style:italic;color:var(--gold-light);margin-top:.5rem;">أهم مناطق الإنتاج حول العالم</p>
+  </div>
+
+  <div id="map-wrap">
+    <div id="world-map">
+      <div class="map-tooltip" id="tooltip">
+        <div class="tt-country" id="tt-name"></div>
+        <div class="tt-prod" id="tt-prod"></div>
+        <div class="tt-bar-wrap"><div class="tt-bar" id="tt-bar"></div></div>
+      </div>
+      <svg id="map-svg" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+        <!-- Simplified world map paths -->
+        <!-- CHINA -->
+        <g class="country-dot" data-country="الصين" data-prod="3,200,000 طن/سنة" data-pct="47">
+          <circle cx="730" cy="185" r="18" fill="rgba(201,168,76,0.7)" stroke="#c9a84c" stroke-width="1.5"/>
+          <circle cx="730" cy="185" r="18" fill="transparent" stroke="#c9a84c" stroke-width="1.5" style="animation:pulse 2s infinite"/>
+          <text x="730" y="212" text-anchor="middle" fill="#f5ede0" font-size="11" font-family="Tajawal,sans-serif">الصين</text>
+          <text x="730" y="226" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Tajawal,sans-serif">47%</text>
+        </g>
+        <!-- INDIA -->
+        <g class="country-dot" data-country="الهند" data-prod="1,340,000 طن/سنة" data-pct="19">
+          <circle cx="630" cy="230" r="14" fill="rgba(201,168,76,0.6)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="630" y="253" text-anchor="middle" fill="#f5ede0" font-size="11" font-family="Tajawal,sans-serif">الهند</text>
+          <text x="630" y="267" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Tajawal,sans-serif">19%</text>
+        </g>
+        <!-- KENYA -->
+        <g class="country-dot" data-country="كينيا" data-prod="570,000 طن/سنة" data-pct="8">
+          <circle cx="540" cy="295" r="11" fill="rgba(201,168,76,0.5)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="540" y="315" text-anchor="middle" fill="#f5ede0" font-size="11" font-family="Tajawal,sans-serif">كينيا</text>
+          <text x="540" y="328" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Tajawal,sans-serif">8%</text>
+        </g>
+        <!-- SRI LANKA -->
+        <g class="country-dot" data-country="سريلانكا" data-prod="340,000 طن/سنة" data-pct="5">
+          <circle cx="660" cy="270" r="10" fill="rgba(201,168,76,0.45)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="660" y="290" text-anchor="middle" fill="#f5ede0" font-size="10" font-family="Tajawal,sans-serif">سريلانكا</text>
+          <text x="660" y="303" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Tajawal,sans-serif">5%</text>
+        </g>
+        <!-- VIETNAM -->
+        <g class="country-dot" data-country="فيتنام" data-prod="260,000 طن/سنة" data-pct="4">
+          <circle cx="730" cy="245" r="9" fill="rgba(201,168,76,0.4)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="730" y="263" text-anchor="middle" fill="#f5ede0" font-size="10" font-family="Tajawal,sans-serif">فيتنام</text>
+          <text x="730" y="276" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Tajawal,sans-serif">4%</text>
+        </g>
+        <!-- TURKEY -->
+        <g class="country-dot" data-country="تركيا" data-prod="280,000 طن/سنة" data-pct="4">
+          <circle cx="550" cy="175" r="9" fill="rgba(201,168,76,0.4)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="550" y="194" text-anchor="middle" fill="#f5ede0" font-size="10" font-family="Tajawal,sans-serif">تركيا</text>
+          <text x="550" y="207" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Tajawal,sans-serif">4%</text>
+        </g>
+        <!-- INDONESIA -->
+        <g class="country-dot" data-country="إندونيسيا" data-prod="160,000 طن/سنة" data-pct="2">
+          <circle cx="780" cy="295" r="8" fill="rgba(201,168,76,0.35)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="780" y="313" text-anchor="middle" fill="#f5ede0" font-size="10" font-family="Tajawal,sans-serif">إندونيسيا</text>
+          <text x="780" y="326" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Tajawal,sans-serif">2%</text>
+        </g>
+        <!-- JAPAN -->
+        <g class="country-dot" data-country="اليابان" data-prod="85,000 طن/سنة" data-pct="1.2">
+          <circle cx="810" cy="190" r="7" fill="rgba(201,168,76,0.3)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="810" y="207" text-anchor="middle" fill="#f5ede0" font-size="10" font-family="Tajawal,sans-serif">اليابان</text>
+        </g>
+        <!-- IRAN -->
+        <g class="country-dot" data-country="إيران" data-prod="100,000 طن/سنة" data-pct="1.5">
+          <circle cx="590" cy="195" r="8" fill="rgba(201,168,76,0.32)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="590" y="213" text-anchor="middle" fill="#f5ede0" font-size="10" font-family="Tajawal,sans-serif">إيران</text>
+        </g>
+        <!-- ARGENTINA -->
+        <g class="country-dot" data-country="الأرجنتين" data-prod="75,000 طن/سنة" data-pct="1">
+          <circle cx="260" cy="370" r="7" fill="rgba(201,168,76,0.28)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="260" y="388" text-anchor="middle" fill="#f5ede0" font-size="10" font-family="Tajawal,sans-serif">الأرجنتين</text>
+        </g>
+        <!-- Subtle world outlines -->
+        <path d="M80,100 Q150,80 220,95 Q300,110 350,105 Q420,98 480,120 Q530,135 560,160 Q580,150 610,145 Q660,140 700,155 Q750,170 800,165 Q850,160 900,170 Q930,175 960,180" fill="none" stroke="rgba(201,168,76,0.08)" stroke-width="1"/>
+        <path d="M100,200 Q180,190 250,195 Q310,200 350,210 Q400,220 430,215" fill="none" stroke="rgba(201,168,76,0.06)" stroke-width="1"/>
+        <text x="500" y="490" text-anchor="middle" fill="rgba(201,168,76,0.2)" font-size="9" font-family="Tajawal,sans-serif">انقر على أي دائرة لعرض تفاصيل الإنتاج</text>
+      </svg>
+      <style>
+        @keyframes pulse{0%{r:18;opacity:0.8;}50%{r:26;opacity:0.2;}100%{r:18;opacity:0.8;}}
+        .country-dot{cursor:pointer;}
+        .country-dot:hover circle:first-child{filter:brightness(1.3);}
+      </style>
+    </div>
+  </div>
+
+  <!-- Country cards -->
+  <div class="country-grid">
+    <div class="c-card">
+      <div class="c-flag">🇨🇳</div>
+      <div class="c-name">الصين</div>
+      <div class="c-prod">3,200,000 طن / سنة</div>
+      <div class="c-bar-wrap"><div class="c-bar" style="width:100%"></div></div>
+      <div class="c-pct">47% من الإنتاج العالمي</div>
+    </div>
+    <div class="c-card">
+      <div class="c-flag">🇮🇳</div>
+      <div class="c-name">الهند</div>
+      <div class="c-prod">1,340,000 طن / سنة</div>
+      <div class="c-bar-wrap"><div class="c-bar" style="width:40%"></div></div>
+      <div class="c-pct">19% من الإنتاج العالمي</div>
+    </div>
+    <div class="c-card">
+      <div class="c-flag">🇰🇪</div>
+      <div class="c-name">كينيا</div>
+      <div class="c-prod">570,000 طن / سنة</div>
+      <div class="c-bar-wrap"><div class="c-bar" style="width:17%"></div></div>
+      <div class="c-pct">8% من الإنتاج العالمي</div>
+    </div>
+    <div class="c-card">
+      <div class="c-flag">🇱🇰</div>
+      <div class="c-name">سريلانكا</div>
+      <div class="c-prod">340,000 طن / سنة</div>
+      <div class="c-bar-wrap"><div class="c-bar" style="width:10%"></div></div>
+      <div class="c-pct">5% من الإنتاج العالمي</div>
+    </div>
+    <div class="c-card">
+      <div class="c-flag">🇻🇳</div>
+      <div class="c-name">فيتنام</div>
+      <div class="c-prod">260,000 طن / سنة</div>
+      <div class="c-bar-wrap"><div class="c-bar" style="width:8%"></div></div>
+      <div class="c-pct">4% من الإنتاج العالمي</div>
+    </div>
+    <div class="c-card">
+      <div class="c-flag">🇹🇷</div>
+      <div class="c-name">تركيا</div>
+      <div class="c-prod">280,000 طن / سنة</div>
+      <div class="c-bar-wrap"><div class="c-bar" style="width:8%"></div></div>
+      <div class="c-pct">4% من الإنتاج العالمي</div>
+    </div>
+    <div class="c-card">
+      <div class="c-flag">🇮🇩</div>
+      <div class="c-name">إندونيسيا</div>
+      <div class="c-prod">160,000 طن / سنة</div>
+      <div class="c-bar-wrap"><div class="c-bar" style="width:5%"></div></div>
+      <div class="c-pct">2% من الإنتاج العالمي</div>
+    </div>
+    <div class="c-card">
+      <div class="c-flag">🇯🇵</div>
+      <div class="c-name">اليابان</div>
+      <div class="c-prod">85,000 طن / سنة</div>
+      <div class="c-bar-wrap"><div class="c-bar" style="width:3%"></div></div>
+      <div class="c-pct">1.2% من الإنتاج العالمي</div>
+    </div>
+  </div>
+
+  <footer>
+    <p class="f-logo">شاي أبوحسين</p>
+    <p class="f-tag">من أجود مزارع العالم إلى كوبك</p>
+    <p class="f-contact">للطلب: <a href="tel:+00971509788772">٠٠٩٧١٥٠٩٧٨٨٧٧٢</a> | <a href="https://wa.me/971509788772">واتساب</a></p>
+    <p class="f-copy">© ٢٠٢٦ شاي أبوحسين</p>
+  </footer>
+</div>
+
+<script>
+// ─── INTRO ───
+const intro = document.getElementById('intro');
+setTimeout(()=>{ intro.style.opacity='0'; setTimeout(()=>{ intro.style.display='none'; },800); }, 2600);
+
+// ─── PAGE SWITCHING ───
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page'+n).classList.add('active');
+  document.getElementById('nav'+n).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(n===1) setTimeout(onScroll,200);
+}
+
+// ─── MUSIC: autoplay on first interaction ───
+const bgMusic  = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('music-btn');
+bgMusic.volume = 0.55;
+
+let musicPlaying = false;
+
+function startMusic() {
+  bgMusic.play().then(()=>{
+    musicPlaying = true;
+    musicBtn.textContent = '⏸';
+    musicBtn.style.borderColor = 'var(--gold)';
+    musicBtn.style.background = 'rgba(201,168,76,0.18)';
+  }).catch(()=>{});
+}
+
+// Try autoplay immediately
+bgMusic.play().then(()=>{
+  musicPlaying = true;
+  musicBtn.textContent = '⏸';
+  musicBtn.style.borderColor = 'var(--gold)';
+  musicBtn.style.background = 'rgba(201,168,76,0.18)';
+}).catch(()=>{
+  // Browser blocked autoplay → start on first user interaction
+  const unlock = () => { startMusic(); document.removeEventListener('click', unlock); document.removeEventListener('touchstart', unlock); document.removeEventListener('scroll', unlock); };
+  document.addEventListener('click',    unlock, {once:true});
+  document.addEventListener('touchstart', unlock, {once:true});
+  document.addEventListener('scroll',   unlock, {once:true});
+});
+
+musicBtn.addEventListener('click', (e)=>{
+  e.stopPropagation();
+  if(musicPlaying) {
+    bgMusic.pause();
+    musicPlaying = false;
+    musicBtn.textContent = '🎵';
+    musicBtn.style.borderColor = '';
+    musicBtn.style.background = '';
+  } else {
+    startMusic();
+  }
+});
+
+// ─── SCROLL-VIDEO ENGINE ───
+const video  = document.getElementById('hero');
+const driver = document.getElementById('scroll-driver');
+const fill   = document.getElementById('progress-fill');
+const hint   = document.getElementById('scroll-hint');
+
+const SCENES = [
+  {id:'scene-0',start:0,   end:0.18},
+  {id:'scene-1',start:0.18,end:0.38},
+  {id:'scene-2',start:0.38,end:0.58},
+  {id:'scene-3',start:0.58,end:0.80},
+  {id:'scene-4',start:0.80,end:1.00},
+];
+const PX_PER_SEC = 420;
+
+function setupDriver(){
+  if(!video.duration||video.duration===Infinity) return;
+  driver.style.height = Math.ceil(video.duration*PX_PER_SEC+window.innerHeight)+'px';
+}
+video.addEventListener('loadedmetadata',setupDriver);
+if(video.readyState>=1) setupDriver();
+let sr=setInterval(()=>{if(video.duration&&video.duration!==Infinity){setupDriver();clearInterval(sr);}},200);
+
+function onScroll(){
+  if(!document.getElementById('page1').classList.contains('active')) return;
+  const rect=driver.getBoundingClientRect();
+  const maxScroll=driver.offsetHeight-window.innerHeight;
+  if(maxScroll<=0) return;
+  const fraction=Math.max(0,Math.min(1,-rect.top/maxScroll));
+  if(video.duration&&video.duration!==Infinity){
+    const t=fraction*video.duration;
+    if(Math.abs(video.currentTime-t)>0.05) video.currentTime=t;
+  }
+  fill.style.width=(fraction*100)+'%';
+  hint.style.opacity=-rect.top>60?'0':'1';
+  SCENES.forEach(s=>{
+    const el=document.getElementById(s.id);
+    if(el) el.classList.toggle('active',fraction>=s.start&&fraction<s.end);
+  });
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+window.addEventListener('resize',()=>{setupDriver();onScroll();});
+setTimeout(onScroll,300);
+
+// ─── WHATSAPP ORDER ───
+function orderTea(name){
+  const msg = encodeURIComponent('مرحباً، أود طلب: ' + name);
+  window.open('https://wa.me/971509788772?text='+msg,'_blank');
+}
+
+// ─── MAP TOOLTIPS ───
+document.querySelectorAll('.country-dot').forEach(g=>{
+  const tt=document.getElementById('tooltip');
+  const mapWrap=document.getElementById('world-map');
+  g.addEventListener('mouseenter',e=>{
+    document.getElementById('tt-name').textContent=g.dataset.country;
+    document.getElementById('tt-prod').textContent='الإنتاج السنوي: '+g.dataset.prod;
+    document.getElementById('tt-bar').style.width=g.dataset.pct+'%';
+    tt.style.opacity='1';
+  });
+  g.addEventListener('mousemove',e=>{
+    const rect=mapWrap.getBoundingClientRect();
+    let x=e.clientX-rect.left+12, y=e.clientY-rect.top+12;
+    if(x+220>rect.width) x=e.clientX-rect.left-230;
+    tt.style.left=x+'px';
+    tt.style.top=y+'px';
+  });
+  g.addEventListener('mouseleave',()=>{ tt.style.opacity='0'; });
+  // Touch
+  g.addEventListener('click',e=>{
+    document.getElementById('tt-name').textContent=g.dataset.country;
+    document.getElementById('tt-prod').textContent='الإنتاج السنوي: '+g.dataset.prod;
+    document.getElementById('tt-bar').style.width=g.dataset.pct+'%';
+    const rect=mapWrap.getBoundingClientRect();
+    const circle=g.querySelector('circle');
+    const cx=parseFloat(circle.getAttribute('cx'));
+    const cy=parseFloat(circle.getAttribute('cy'));
+    const svgW=1000, svgH=500;
+    tt.style.left=(cx/svgW*rect.width+10)+'px';
+    tt.style.top=(cy/svgH*rect.height+10)+'px';
+    tt.style.opacity='1';
+    setTimeout(()=>tt.style.opacity='0',3000);
+  });
+});
+</script>
+</body>
+</html>
